@@ -1,11 +1,17 @@
 export default {
-  name: 'post',
-  title: 'Post',
+  name: 'trending',
+  title: 'Trending',
   type: 'document',
   fields: [
     {
       name: 'title',
       title: 'Title',
+      description: 'Keep titles short man!',
+      type: 'string',
+    },
+    {
+      name: 'description',
+      title: 'Description',
       type: 'string',
     },
     {
@@ -21,7 +27,7 @@ export default {
       name: 'author',
       title: 'Author',
       type: 'reference',
-      to: {type: 'author'},
+      to: { type: 'author' },
     },
     {
       name: 'mainImage',
@@ -35,7 +41,7 @@ export default {
       name: 'categories',
       title: 'Categories',
       type: 'array',
-      of: [{type: 'reference', to: {type: 'category'}}],
+      of: [{ type: 'reference', to: { type: 'category' } }],
     },
     {
       name: 'publishedAt',
@@ -56,7 +62,7 @@ export default {
       media: 'mainImage',
     },
     prepare(selection) {
-      const {author} = selection
+      const { author } = selection
       return Object.assign({}, selection, {
         subtitle: author && `by ${author}`,
       })
