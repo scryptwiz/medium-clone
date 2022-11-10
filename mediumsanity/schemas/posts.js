@@ -1,6 +1,6 @@
 export default {
-  name: 'trending',
-  title: 'Trending',
+  name: 'posts',
+  title: 'Posts',
   type: 'document',
   fields: [
     {

@@ -5,7 +5,7 @@ const Header = () => {
         <header className="flex items-center justify-between p-5 max-w-7xl mx-auto w-full">
             <div>
                 <Link href="/">
-                    <img className="w-44 object-contain cursor-pointer" src="/logos/header.png" alt="Medium" />
+                    <img className="w-32 md:w-44 object-contain cursor-pointer" src="/logos/header.png" alt="Medium" />
                 </Link>
             </div>
             <div className="flex w-fit space-x-5 items-center capitalize">
