@@ -12,7 +12,7 @@ export default function Posts({ posts }: Props) {
             <div className="lg:max-w-3xl w-full md:max-w-2xl">
                 {posts.map((post) => {
                     return (
-                        <Link key={post._id} href={`/post/${post.slug.currnet}`}>
+                        <Link key={post._id} href={`/post/${post.slug.current}`}>
                             <div className="flex items-center gap-2 md:gap-10">
                                 <div>
                                     <div className="flex items-center gap-2 mb-2">
@@ -22,7 +22,9 @@ export default function Posts({ posts }: Props) {
                                     <h2 className="font-bold text-sm md:text-xl text-gray-800">{`${post.title}`}</h2>
                                     <p className="text-md text-gray-600">{`${post.description}`}</p>
                                 </div>
-                                <img src={urlFor(post.mainImage).url()} alt="PostImage" className="md:w-52 object-cover md:h-32 w-24 h-24" />
+                                <div className="group">
+                                    <img src={urlFor(post.mainImage).url()} alt="PostImage" className="md:w-52 object-cover md:h-32 w-24 h-24 group-hover:scale-105 transition-transform ease-in-out" />
+                                </div>
                             </div>
                         </Link>
                     )

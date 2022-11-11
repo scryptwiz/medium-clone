@@ -13,7 +13,7 @@ export interface Post {
         };
     };
     slug: {
-        currnet: String;
+        current: String;
     };
     body: [Object]
 }
