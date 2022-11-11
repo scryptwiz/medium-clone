@@ -1,5 +1,6 @@
 import { GetStaticProps } from "next";
-import Header from "../../components/Header";
+import Head from "next/head";
+import PostHeader from "../../components/PostHeader";
 import { sanityClient } from "../../sanity";
 import { Post } from "../../typings";
 
@@ -8,10 +9,15 @@ interface Props {
 }
 
 function posts({ post }: Props) {
-    console.log(post);
+    // console.log(post);
     return (
         <div>
-            <Header />
+            <Head>
+                <title>{`${post.title}`}</title>
+                <link rel="icon" href="/medium.svg" />
+            </Head>
+
+            <PostHeader />
         </div>
     )
 }
@@ -60,6 +66,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return {
         props: {
             post,
-        }
+        },
+        revalidate: 60,  // after sixty seconds it reupdate the old cache
     }
 }
