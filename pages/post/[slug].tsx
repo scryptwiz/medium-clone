@@ -17,7 +17,17 @@ function posts({ post }: Props) {
                 <link rel="icon" href="/medium.svg" />
             </Head>
 
-            <PostHeader />
+            <div className="flex flex-col lg:flex-row max-w-[90rem] mx-auto">
+                <PostHeader />
+                <div className="flex w-full overflow-y-auto h-screen">
+                    <div className="lg:w-8/12 w-full bg-gray-700 p-2">
+
+                    </div>
+                    <div className="lg:w-4/12 hidden lg:flex bg-black p-2">
+
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
