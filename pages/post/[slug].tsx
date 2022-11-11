@@ -1,4 +1,5 @@
 import { GetStaticProps } from "next";
+import Header from "../../components/Header";
 import { sanityClient } from "../../sanity";
 import { Post } from "../../typings";
 
@@ -9,7 +10,9 @@ interface Props {
 function posts({ post }: Props) {
     console.log(post);
     return (
-        <div>posts</div>
+        <div>
+            <Header />
+        </div>
     )
 }
 
@@ -36,7 +39,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const query = `*[_type == "posts" && slug.current == "$slug"][0]{
+    const query = `*[_type == "posts" && slug.current == $slug][0]{
         _id,
         title,
         slug,
@@ -48,9 +51,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         mainImage,
         body
       }`;
-    const post = await sanityClient.fetch(query, {
-        slug: params?.slug,
-    });
+    const post = await sanityClient.fetch(query, { slug: params?.slug });
     if (!post) {
         return {
             notFound: true
@@ -58,7 +59,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
     return {
         props: {
-            posts,
+            post,
         }
     }
 }
