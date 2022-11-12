@@ -1,6 +1,7 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import { AiOutlineSearch } from 'react-icons/ai';
+import PortableText from "react-portable-text";
 import PostHeader from "../../components/PostHeader";
 import { sanityClient, urlFor } from "../../sanity";
 import { Post } from "../../typings";
@@ -19,6 +20,7 @@ function posts({ post }: Props) {
 
             <div className="flex flex-col lg:flex-row max-w-[90rem] mx-auto">
                 <PostHeader />
+                {/* Post Section     */}
                 <div className="flex w-full overflow-y-auto h-auto lg:h-screen">
                     <div className="lg:w-8/12 w-full p-2">
                         <div className="mx-auto w-full lg:w-11/12 px-5 py-5 lg:py-16">
@@ -33,8 +35,25 @@ function posts({ post }: Props) {
                                 <h1 className="text-3xl font-bold">{post.title}</h1>
                                 <img src={urlFor(post.mainImage).url()} alt={`${post.title}`} className='mt-5 w-full object-cover' />
                             </div>
+                            <div className="mt-5">
+                                <PortableText dataset={process.env.NEXT_PUBLIC_SANITY_DATASET} projectId={process.env.NEXT_PUBLIC_PROJECT_ID} content={post.body} serializers={{
+                                    h1: ({ children }: any) => {
+                                        <h1 className="text-3xl font-bold my-5">{children}</h1>
+                                    },
+                                    h2: ({ children }: any) => {
+                                        <h1 className="text-2xl font-bold my-5">{children}</h1>
+                                    },
+                                    li: ({ children }: any) => {
+                                        <li className="ml-4 list-disc">{children}</li>
+                                    },
+                                    link: ({ href, children }: any) => {
+                                        <a href={href} className="text-blue-500 hover:underline">{children}</a>
+                                    },
+                                }} />
+                            </div>
                         </div>
                     </div>
+                    {/* Right Info Section */}
                     <div className="lg:w-4/12 hidden lg:flex border-l border-gray-200 sticky top-0 w-full px-5 lg:py-16">
                         <div className="w-full h-full">
                             <div className="flex gap-10 items-center">
