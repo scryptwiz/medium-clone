@@ -15,5 +15,6 @@ export interface Post {
     slug: {
         current: String;
     };
+    _createdAt: Date;
     body: [Object]
 }
