@@ -22,15 +22,19 @@ interface Props {
 function posts({ post }: Props) {
     const { register, handleSubmit, formState: { errors } } = useForm<importFormInput>();
     const [submitted, setSubmitted] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const onSubmit: SubmitHandler<importFormInput> = async (data) => {
+        setLoading(true)
         await fetch('/api/createComment', {
             method: "POST",
             body: JSON.stringify(data),
         }).then(() => {
+            setLoading(false)
             console.log(data);
             setSubmitted(true)
         }).catch(err => {
+            setLoading(false)
             setSubmitted(false)
             console.log(err);
         })
@@ -95,7 +99,11 @@ function posts({ post }: Props) {
                                         <textarea {...register('comment', { required: true })} className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-yellow-500 focus:ring outline-none ring-0" rows={8} placeholder="Leave a comment..." />
                                         {errors.comment && (<span className="text-red-500 mt-2">Comment Field is required</span>)}
                                     </label>
-                                    <input type="submit" className="bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline outline-none text-white py-2 px-4 rounded cursor-pointer font-bold" />
+                                    {loading ? (
+                                        <button disabled className="bg-yellow-400 focus:shadow-outline outline-none text-white py-2 px-4 rounded cursor-pointer font-bold">Loading...</button>
+                                    ) : (
+                                        <input type="submit" className="bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline outline-none text-white py-2 px-4 rounded cursor-pointer font-bold" />
+                                    )}
                                 </form>
                             )}
                             {/* Approved Comment Section */}
