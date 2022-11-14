@@ -37,20 +37,14 @@ function posts({ post }: Props) {
                             </div>
                             <div className="mt-5">
                                 <PortableText dataset={process.env.NEXT_PUBLIC_SANITY_DATASET} projectId={process.env.NEXT_PUBLIC_PROJECT_ID} content={post.body} serializers={{
-                                    h1: ({ children }: any) => {
-                                        <h1 className="text-3xl font-bold my-5">{children}</h1>
-                                    },
-                                    h2: ({ children }: any) => {
-                                        <h1 className="text-2xl font-bold my-5">{children}</h1>
-                                    },
-                                    li: ({ children }: any) => {
-                                        <li className="ml-4 list-disc">{children}</li>
-                                    },
-                                    link: ({ href, children }: any) => {
-                                        <a href={href} className="text-blue-500 hover:underline">{children}</a>
-                                    },
+                                    h1: (props: any) => <h1 className="text-3xl font-bold my-5" {...props} />,
+                                    p: (props: any) => <p className="text-lg my-5" {...props} />,
+                                    h2: (props: any) => <h2 className="text-2xl font-bold my-5" {...props} />,
+                                    li: (props: any) => <li className="ml-4 list-disc" {...props} />,
+                                    link: ({ href, children }: any) => <a href={href} className="text-blue-500 hover:underline">{children}</a>,
                                 }} />
                             </div>
+                            <hr className="max-w-lg mx-auto border-5 my-5 border-yellow-500" />
                         </div>
                     </div>
                     {/* Right Info Section */}

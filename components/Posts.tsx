@@ -9,11 +9,11 @@ interface Props {
 export default function Posts({ posts }: Props) {
     return (
         <div className="max-w-7xl w-full mx-auto py-10 lg:py-7 gap-5 px-5 md:px-10 lg:px-5 flex">
-            <div className="lg:max-w-3xl w-full md:max-w-2xl">
+            <div className="lg:max-w-3xl w-full md:max-w-2xl flex flex-col gap-10">
                 {posts.map((post) => {
                     return (
                         <Link key={post._id} href={`/post/${post.slug.current}`}>
-                            <div className="flex items-center gap-2 md:gap-10">
+                            <div className="flex items-center gap-2 w-full justify-between md:gap-10">
                                 <div>
                                     <div className="flex items-center gap-2 mb-2">
                                         <img src={urlFor(post.author.image).url()} alt="PostImage" className="object-cover w-6 h-6 rounded-full" />
