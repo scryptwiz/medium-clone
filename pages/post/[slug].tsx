@@ -1,16 +1,41 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
+import { useState } from "react";
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineSearch } from 'react-icons/ai';
 import PortableText from "react-portable-text";
 import PostHeader from "../../components/PostHeader";
 import { sanityClient, urlFor } from "../../sanity";
 import { Post } from "../../typings";
 
+interface importFormInput {
+    _id: String;
+    name: String;
+    email: String;
+    comment: String;
+}
+
 interface Props {
     post: Post
 }
 
 function posts({ post }: Props) {
+    const { register, handleSubmit, formState: { errors } } = useForm<importFormInput>();
+    const [submitted, setSubmitted] = useState(false)
+
+    const onSubmit: SubmitHandler<importFormInput> = async (data) => {
+        await fetch('/api/createComment', {
+            method: "POST",
+            body: JSON.stringify(data),
+        }).then(() => {
+            console.log(data);
+            setSubmitted(true)
+        }).catch(err => {
+            setSubmitted(false)
+            console.log(err);
+        })
+        console.log(data);
+    }
     return (
         <div>
             <Head>
@@ -44,7 +69,47 @@ function posts({ post }: Props) {
                                     link: ({ href, children }: any) => <a href={href} className="text-blue-500 hover:underline">{children}</a>,
                                 }} />
                             </div>
+                            {/* Leave Comment Section */}
                             <hr className="max-w-lg mx-auto border-5 my-5 border-yellow-500" />
+                            {submitted ? (
+                                <div className="flex flex-col p-10 my-100 bg-yellow-500 text-white mx-w-2xl mx-auto">
+                                    <h1 className="text-3xl font-bold">Thanks for commenting</h1>
+                                    <p className="">Once it has been approved, it will appear below</p>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col p-5 max-2-2xl mx-auto">
+                                    <h4 className="text-xl font-semibold mb-10">Leave a comment below</h4>
+                                    <input {...register('_id')} type="hidden" name="_id" value={post._id} />
+                                    <label className="block mb-5">
+                                        <span className="text-gray-700">Name</span>
+                                        <input {...register('name', { required: true })} className="shadow border rounded py-2 px-3 form-input mt-3 block w-full ring-yellow-500 focus:ring outline-none ring-0" type="text" placeholder="John Doe" />
+                                        {errors.name && (<span className="text-red-500 mt-2">Name Field is required</span>)}
+                                    </label>
+                                    <label className="block mb-5">
+                                        <span className="text-gray-700">Email</span>
+                                        <input {...register('email', { required: true })} className="shadow border rounded py-2 px-3 form-input mt-3 block w-full ring-yellow-500 focus:ring outline-none ring-0" type="text" placeholder="example@gmail.com" />
+                                        {errors.email && (<span className="text-red-500 mt-2">Email Field is required</span>)}
+                                    </label>
+                                    <label className="block mb-5">
+                                        <span className="text-gray-700">Comment</span>
+                                        <textarea {...register('comment', { required: true })} className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-yellow-500 focus:ring outline-none ring-0" rows={8} placeholder="Leave a comment..." />
+                                        {errors.comment && (<span className="text-red-500 mt-2">Comment Field is required</span>)}
+                                    </label>
+                                    <input type="submit" className="bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline outline-none text-white py-2 px-4 rounded cursor-pointer font-bold" />
+                                </form>
+                            )}
+                            {/* Approved Comment Section */}
+                            <div className="flex flex-col p-10 my-10 max-w-2xl mx-auto shadow shadow-yellow-400 space-y-2">
+                                <h3 className="text-4xl">Comments</h3>
+                                <hr className="pb-2" />
+                                {post.comments.map((Comment) => {
+                                    return (
+                                        <div key={Comment._id}>
+                                            <p><span className="text-yellow-500">{Comment.name}</span>:{Comment.comment}</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
                     </div>
                     {/* Right Info Section */}
@@ -101,6 +166,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
          name,
          image
         },
+        'comments': *[ _type=="comment"&& post._ref==^._id && approved==true ],
         description,
         mainImage,
         body,

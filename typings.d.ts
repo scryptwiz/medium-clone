@@ -6,6 +6,7 @@ export interface Post {
         name: String;
         image: String;
     },
+    comments: Comment[];
     description: String;
     mainImage: {
         asset: {
@@ -17,4 +18,20 @@ export interface Post {
     };
     _createdAt: Date;
     body: [Object]
+}
+
+export interface Comment {
+    approved: Boolean;
+    comment: String;
+    email: String;
+    name: String;
+    post: {
+        _ref: String,
+        _type: String;
+    };
+    _createdAt: String;
+    _id: Any;
+    _rev: String;
+    _type: String;
+    _updatedAt: String
 }
